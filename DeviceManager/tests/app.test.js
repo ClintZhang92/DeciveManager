@@ -5,56 +5,6 @@ const DbClient = require("../DB/db-connection");
 const { response } = require("express");
 const models = require(`../DB/models`);
 
-//console.log('server is ', server);
-
-// describe('api test', () => {
-
-//     describe('get test', () => {
-
-//         test('get deviceinfo', async () => { 
-
-//             const response = await request(app).get('/api/v1/device');
-
-//             expect(response.statusCode).toBe(200);
-//             expect(response.body.length).toBeGreaterThan(0);
-
-//         });
-//     });
-// });
-
-
-
-
-
-// const connection = createConnection({
-//     host: "127.0.0.1",
-//     user: "root",
-//     password: "baby090814",
-//     multipleStatements: true,
-//   });
-
-// beforeEach(async () => {
-//   connection.connect();
-//   connection.query("use DeviceDB"); 
-// });
-
-// afterEach(async ()=>{
-  
-// })
-
-beforeAll(async() => {
-  await connection();
-});
-
-// afterAll( async() => {
-//   //await server.close();
-// });
-
-afterAll(async()=> {
-  await closeConnection();
-})
-
-
 test('get sn;00005 device info, responds with json', function(done) {
   request(app)
     .get('/api/v1/device/00005')
@@ -108,22 +58,3 @@ test('get all device info, responds with json', function(done) {
         done();
       });
 });
-
-// describe('GET /api/v1/device',  function() {
-//     it('responds with json', async function() {
-//       const response = await request(app)
-//         .get('/api/v1/device/aaaaa')
-
-//       expect(response.status).toEqual(200);
-//       expect(res.body.length).toBeGreaterThan(0);
-//     });
-//   });
-
-// describe("GET /api/products", () => {
-//     it('gets the device info', async () => {
-//         const response = await request(app).get("/api/v1/device")
-      
-//         expect(response.status).toBe(200)
-//         expect(response.body.length).toBeGreaterThan(0);
-//       })
-//   });

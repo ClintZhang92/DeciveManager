@@ -1,19 +1,15 @@
 const express = require(`express`);
-//const bodyParser = require(`body-parser`);
-const Sequelize = require('sequelize');
 
 const app = express();
-
 const models = require(`../DB/models`);
 
 app.use(express.json());
 app.use(express.urlencoded());
-//app.use(bodyParser.urlencoded({extended:true}));
 
 /** Get All Device Info */
 app.get(`/api/v1/device`,async (req,res,next)=>{
     try {
-        let list = await models.DeviceInfo.findAll();
+        let list = await models.Devices.findAll();
         if(list){
             res.json({
                 list,
@@ -42,7 +38,7 @@ app.get(`/api/v1/device/:sn`,async (req,res,next)=>{
                 message:`wrong sn`
             })
         }else{
-            let device = await models.DeviceInfo.findOne({
+            let device = await models.Devices.findOne({
                 where:{
                     sn
                 }
@@ -65,12 +61,17 @@ app.get(`/api/v1/device/:sn`,async (req,res,next)=>{
 /** Add Device */
 app.post(`/api/v1/device/`,async (req,res,next)=>{
     try {
-        let { name, sn, model, grade} = req.body;
+        let { name, sn, model, grade, owner, underMaintenance, country, city} = req.body;
         // input check
         var regName = /\w{3,5}/;
         var regSN = /^[0-9a-zA-Z]{5}$/;
         var regModel = /\w{3,10}/;
         var regGrade = /^[0-9a-zA-Z]{3,5}$/;
+        var regOwner = /^[0-9a-zA-Z]{3,15}$/;
+        var regUnderMaintenance;
+        var regCountry = /^[a-zA-Z]{1,15}$/;
+        var regCity = /^[a-zA-Z]{1,15}$/;
+
         var regRes = true;
         
         if(!regSN.test(sn)){
@@ -79,7 +80,7 @@ app.post(`/api/v1/device/`,async (req,res,next)=>{
             })
             regRes = false;
         }else{
-            let thesame = await models.DeviceInfo.findOne({
+            let thesame = await models.Devices.findOne({
                 where:{
                     sn
                 }
@@ -108,12 +109,35 @@ app.post(`/api/v1/device/`,async (req,res,next)=>{
             })
             regRes = false;
         }
+        if(!regOwner.test(owner)){
+            res.status(403).json({
+                message:`wrong owner`
+            })
+            regRes = false;
+        }
+        if(!regCountry.test(country)){
+            res.status(403).json({
+                message:`wrong country`
+            })
+            regRes = false;
+        }
+        if(!regCity.test(city)){
+            res.status(403).json({
+                message:`wrong city`
+            })
+            regRes = false;
+        }
+
         if(regRes){
-            let device = await models.DeviceInfo.create({
+            let device = await models.Devices.create({
                 name,
                 sn,
                 model,
                 grade,
+                owner,
+                underMaintenance,
+                country,
+                city
             })
             res.status(200).json({
                 device,
@@ -129,8 +153,9 @@ app.post(`/api/v1/device/`,async (req,res,next)=>{
 /** Update Device */
 app.put(`/api/v1/device`, async (req,res,next)=>{
     try {
-        let { name, sn, model, grade} = req.body;
+        let { name, sn, model, grade, owner, underMaintenance, country, city} = req.body;
 
+        // input check needs update
         // input check
         var regName = /\w{3,5}/;
         var regSN = /^[0-9a-zA-Z]{5}$/;
@@ -163,7 +188,7 @@ app.put(`/api/v1/device`, async (req,res,next)=>{
             regRes = false;
         }
         if(regRes){
-            let device = await models.DeviceInfo.findOne({
+            let device = await models.Devices.findOne({
                 where:{
                     sn
                 }
@@ -202,7 +227,7 @@ app.delete(`/api/v1/device`,async (req,res,next)=>{
                 message:`wrong sn`
             })
         }else{
-            let device = await models.DeviceInfo.findOne({
+            let device = await models.Devices.findOne({
                 where:{
                     sn
                 }
@@ -224,55 +249,7 @@ app.delete(`/api/v1/device`,async (req,res,next)=>{
     }
 })
 
-
-const dbConfig = new Sequelize('DeviceDB', 'root', 'baby090814', {
-    dialect: 'mysql',
-    host: '127.0.0.1',
-    port: 3306,
-    logging: false,
-    timestamps: false,
-    pool: {
-        max: 5,
-        min: 0,
-        idle: 10000
-      }
-  });
-
-const connection = () => {
-        //dbConfig.authenticate();
-};
-
-
-const closeConnection = () => {
-    dbConfig.close();
-  };
-
-// const  dbStart = 
-//     dbConfig.authenticate()
-//   .then(() => {
-//    console.log('Connection has been established successfully.');
-//   })
-//   .catch((err) => {
-//     console.error('Unable to connect to the database:', err);
-//   });
-
-module.exports = {
-    app,
-    connection,
-    closeConnection,
-}
-
-/** Error */
-// app.use((err,req,res,next)=>{
-//     if(err){
-//         res.status(500).json({
-//             message:err.message
-//         })
-//     }
-// })
-
-// let server = app.listen(`3000`,()=>{
-//     console.log(`Server Start`)
-// });
-
-// module.exports = server;
+app.listen(3000, function(err){
+    if (err) console.log("Error in server setup")
+    console.log("Server listening on Port", 3000);
+})
