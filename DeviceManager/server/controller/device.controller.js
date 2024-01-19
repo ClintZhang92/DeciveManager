@@ -57,15 +57,16 @@ const addDevice = (async (req,res,next)=>{
     console.log(req.body);
     try {
         let { name, sn, model, grade, owner, underMaintenance, country, city} = req.body;
+        console.log(underMaintenance);
         // input check
         var regName = /\w{1,15}/;
-        var regSN = /^[0-9a-zA-Z]{1,15}$/;
-        var regModel = /\w{1,10}/;
-        var regGrade = /^[0-9a-zA-Z]{1,15}$/;
-        var regOwner = /^[0-9a-zA-Z]{1,15}$/;
-        var regUnderMaintenance;
-        var regCountry = /^[0-9a-zA-Z]{1,15}$/;
-        var regCity = /^[0-9a-zA-Z]{1,15}$/;
+        var regSN = /\w{1,15}/;
+        var regModel = /\w{1,15}/;
+        var regGrade = /\w{1,15}/;
+        var regOwner = /\w{1,15}/;
+        var regUnderMaintenance = /\w{1,15}/;
+        var regCountry = /\w{1,15}/;
+        var regCity = /\w{1,15}/;
 
         var regRes = true;
         
@@ -111,6 +112,12 @@ const addDevice = (async (req,res,next)=>{
             })
             regRes = false;
         }
+        if(!regUnderMaintenance.test(owner)){
+            res.status(403).json({
+                message:`wrong underMaintenance`
+            })
+            regRes = false;
+        }
         if(!regCountry.test(country)){
             res.status(403).json({
                 message:`wrong country`
@@ -152,13 +159,13 @@ const updateDevice = (async (req,res,next)=>{
         let { name, sn, model, grade, owner, underMaintenance, country, city} = req.body;
         // input check
         var regName = /\w{1,15}/;
-        var regSN = /^[0-9a-zA-Z]{1,15}$/;
-        var regModel = /\w{1,10}/;
-        var regGrade = /^[0-9a-zA-Z]{1,15}$/;
-        var regOwner = /^[0-9a-zA-Z]{1,15}$/;
-        var regUnderMaintenance;
-        var regCountry = /^[0-9a-zA-Z]{1,15}$/;
-        var regCity = /^[0-9a-zA-Z]{1,15}$/;
+        var regSN = /\w{1,15}/;
+        var regModel = /\w{1,15}/;
+        var regGrade = /\w{1,15}/;
+        var regOwner = /\w{1,15}/;
+        var regUnderMaintenance = /\w{1,15}/;
+        var regCountry = /\w{1,15}/;
+        var regCity = /\w{1,15}/;
 
         var regRes = true;
         
@@ -189,6 +196,12 @@ const updateDevice = (async (req,res,next)=>{
         if(!regOwner.test(owner)){
             res.status(403).json({
                 message:`wrong owner`
+            })
+            regRes = false;
+        }
+        if(!regUnderMaintenance.test(owner)){
+            res.status(403).json({
+                message:`wrong underMaintenance`
             })
             regRes = false;
         }

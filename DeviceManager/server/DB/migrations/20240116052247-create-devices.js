@@ -25,7 +25,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       underMaintenance: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.STRING
       },
       country: {
         type: Sequelize.STRING

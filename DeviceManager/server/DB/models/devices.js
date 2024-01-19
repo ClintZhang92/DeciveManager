@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
     model: DataTypes.STRING,
     grade: DataTypes.STRING,
     owner: DataTypes.STRING,
-    underMaintenance: DataTypes.BOOLEAN,
+    underMaintenance: DataTypes.STRING,
     country: DataTypes.STRING,
     city: DataTypes.STRING
   }, {

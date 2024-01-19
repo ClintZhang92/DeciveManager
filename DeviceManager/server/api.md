@@ -1,16 +1,20 @@
 deviceDB
-item    id, name, sn, model, grade
-length      3-10, 5 , 3-10 , 3-5
-AddDevice
-    name, sn, model, grade
+item    id, name, sn, model, grade, owner, underMaintenance, country, city
+length  {1,15}
 
-UpdateDevice
-    need sn, change name, sn, model, grade
+127.0.0.1:3000/api/v1/device
+
+AddDevice
+POST   name, sn, model, grade, owner, underMaintenance, country, city
+
+UpdateDevice(need sn)
+PUT    name, sn, model, grade, owner, underMaintenance, country, city
 
 DeleteDevice
-    need sn
+POST   sn
 
-FindDevice
-    need sn, return name, sn, model, grade
+FindDevice(sn)
+GET
 
 FindAllDevice
+GET

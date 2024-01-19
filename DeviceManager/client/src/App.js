@@ -16,22 +16,6 @@ function App() {
       })
     }
 
-  function handleCreateSubmit(e) {
-    e.preventDefault();
-    const form = e.target;
-    const formData = new FormData(form);
-    const formJson = Object.fromEntries(formData.entries());
-    axios({
-      method: 'post',
-      url: 'http://127.0.0.1:3000/api/v1/device',
-      headers: { 'content-type': 'application/json' },
-      data: formJson
-    })
-    .then((res)=>{
-      console.log(res);
-    })
-  }
-
   function handleCreateBtn(e) {
     e.preventDefault();
     const form = document.deviceForm;
@@ -45,6 +29,9 @@ function App() {
     })
     .then((res)=>{
       console.log(res);
+    })
+    .catch(()=>{
+
     })
   }
 
@@ -120,7 +107,7 @@ function App() {
               <td className='td'>{device.model}</td>
               <td className='td'>{device.grade}</td>
               <td className='td'>{device.owner}</td>
-              <td className='td'>{device.underMaintenance && device.underMaintenance.toString()}</td>
+              <td className='td'>{device.underMaintenance}</td>
               <td className='td'>{device.country}</td>
               <td className='td'>{device.city}</td>
               <td className='td'>{device.createdAt && device.createdAt.toString("dd/MM/yyyy HH:mm")}</td>
@@ -131,7 +118,7 @@ function App() {
         </table>
       </div>
       <br/>
-        <form name="deviceForm" className="vertical-form" onSubmit={handleCreateSubmit}>
+        <form name="deviceForm" className="vertical-form">
           <div>
               <br />
               <label className="vertical-label">
@@ -155,7 +142,7 @@ function App() {
               </label>
               <br />
               <label className="vertical-label">
-                underMaintenance: <input type="checkbox" name="underMaintenance" />
+                underMaintenance: <input type="text" name="underMaintenance" />
               </label>
               <br />
               <label className="vertical-label">
@@ -208,7 +195,7 @@ function App() {
                 <td className='td'>{oneDevice.model}</td>
                 <td className='td'>{oneDevice.grade}</td>
                 <td className='td'>{oneDevice.owner}</td>
-                <td className='td'>{oneDevice.underMaintenance && oneDevice.underMaintenance.toString()}</td>
+                <td className='td'>{oneDevice.underMaintenance}</td>
                 <td className='td'>{oneDevice.country}</td>
                 <td className='td'>{oneDevice.city}</td>
                 <td className='td'>{oneDevice.createdAt && oneDevice.createdAt.toString()}</td>
@@ -218,7 +205,7 @@ function App() {
           </table>
         </div>
       </div>
-
+      <br/>
       <div>
         <form name="snDeleteForm" className="vertical-form" onSubmit={handleDeleteSubmit}>
           <label className="vertical-label">
